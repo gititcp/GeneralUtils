@@ -21,7 +21,7 @@ dependencies {
 或者
 
 dependencies {
-	        implementation 'com.github.Lvluffy:GeneralUtils:1.0.0'
+	        implementation 'com.github.gititcp:GeneralUtils:1.1.2'
 }
 
 ## 混淆文件
