@@ -15,13 +15,13 @@ allprojects {
 二、Module下的build.gradle文件下添加
 
 dependencies {
-	        compile 'com.github.Lvluffy:GeneralUtils:1.0.0'
+	        compile 'com.github.gititcp:GeneralUtils:1.0.0'
 }
 
 或者
 
 dependencies {
-	        implementation 'com.github.gititcp:GeneralUtils:1.1.2'
+	        implementation 'com.github.gititcp:GeneralUtils:1.0.0'
 }
 
 ## 混淆文件
