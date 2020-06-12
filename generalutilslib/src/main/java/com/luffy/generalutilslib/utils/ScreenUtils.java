@@ -13,7 +13,9 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 
 /**
  * Created by lvlufei on 2018/1/1
@@ -176,4 +178,48 @@ public class ScreenUtils {
         }
         return show;
     }
+
+    public static boolean isHasNavigationBar(Activity activity) {
+        Point size = new Point();
+        Point realSize = new Point();
+        activity.getWindowManager().getDefaultDisplay().getSize(size);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            activity.getWindowManager().getDefaultDisplay().getRealSize(realSize);
+        } else {
+            Display display = activity.getWindowManager().getDefaultDisplay();
+
+            Method mGetRawH = null;
+            Method mGetRawW = null;
+
+            int realWidth = 0;
+            int realHeight = 0;
+
+            try {
+                mGetRawW = Display.class.getMethod("getRawWidth");
+                mGetRawH = Display.class.getMethod("getRawHeight");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                realWidth = (Integer) mGetRawW.invoke(display);
+                realHeight = (Integer) mGetRawH.invoke(display);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            realSize.set(realWidth, realHeight);
+        }
+        if (realSize.equals(size)) {
+            return false;
+        } else {
+            size.y = size.y + ScreenUtils.getInstance().getNavigationBarHeight(activity);
+            if (realSize.y < size.y) {
+                return false;
+            }
+            return true;
+        }
+    }
+
 }
