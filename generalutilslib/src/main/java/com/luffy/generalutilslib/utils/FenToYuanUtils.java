@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  */
 
 public class FenToYuanUtils {
-
     /**
      * 转换为bigDecimal在toString
      *
