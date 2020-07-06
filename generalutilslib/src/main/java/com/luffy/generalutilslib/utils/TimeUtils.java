@@ -287,7 +287,7 @@ public class TimeUtils {
         long diff = new Date().getTime() - date;
         long r = 0;
         if (diff > day) {
-            return getTime(date, TimeUtils.DATE_FORMAT_YMD_1);
+            return getTime(date, TimeUtils.DATE_FORMAT_YMD_2);
         }
         if (diff > hour) {
             r = (diff / hour);
