@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
+
+import com.luffy.generalutilslib.BuildConfig;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -65,7 +69,7 @@ public class VersionUpgradeUtils {
             public void run() {
                 try {
                     File file = downloadApk(uri, mProgressDialog);
-                    sleep(3000);
+                    sleep(2000);
                     installApk(mContext, file);
                     mProgressDialog.dismiss(); //结束掉进度条对话框
                 } catch (Exception e) {
@@ -121,13 +125,15 @@ public class VersionUpgradeUtils {
      * @param file     文件
      */
     public void installApk(Context mContext, File file) {
-        Intent intent = new Intent();
-        //执行动作
-        intent.setAction(Intent.ACTION_VIEW);
-        //安装好后打开新版本
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //执行的数据类型
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri apkUri = FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".fileprovider", file); //与manifest中定义的provider中的authorities保持一致
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
         mContext.startActivity(intent);
     }
 }
