@@ -16,6 +16,19 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <provider
+            android:name=".utils.fileprovider.DownLoadFileProvider"
+            android:authorities="com.aoji.liuxue.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <!-- 元数据 -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_student" />
+        </provider>
+
     </application>
 
 </manifest>

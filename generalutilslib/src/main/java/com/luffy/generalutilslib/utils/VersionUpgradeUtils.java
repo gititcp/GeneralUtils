@@ -136,4 +136,23 @@ public class VersionUpgradeUtils {
         }
         mContext.startActivity(intent);
     }
+
+    /**
+     * 安装Apk
+     *
+     * @param mContext 上下文
+     * @param file     文件
+     */
+    public void installApk(Context mContext, File file, String fileprovider) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri apkUri = FileProvider.getUriForFile(mContext, fileprovider, file); //与manifest中定义的provider中的authorities保持一致
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
+        mContext.startActivity(intent);
+    }
 }
