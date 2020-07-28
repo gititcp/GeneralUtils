@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 
 import com.luffy.generalutilslib.BuildConfig;
+import com.luffy.generalutilslib.utils.fileprovider.DownLoadFileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -178,7 +179,7 @@ public class VersionUpgradeUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri apkUri = FileProvider.getUriForFile(mContext, fileprovider, file); //与manifest中定义的provider中的authorities保持一致
+            Uri apkUri = DownLoadFileProvider.getUriForFile(mContext, fileprovider, file); //与manifest中定义的provider中的authorities保持一致
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
         } else {
