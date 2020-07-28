@@ -79,6 +79,37 @@ public class VersionUpgradeUtils {
         }.start();
     }
 
+
+    /**
+     * 外部升级（下载apk）
+     *
+     * @param mContext 是否有效
+     * @param uri      下载地址
+     */
+    public void internalUpgrade(final Context mContext, final String uri, final String fileprovider) {
+        final ProgressDialog mProgressDialog;    //进度条对话框
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setMessage("正在下载更新");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+        //启动子线程下载任务
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    File file = downloadApk(uri, mProgressDialog);
+                    sleep(2000);
+                    installApk(mContext, file, fileprovider);
+                    mProgressDialog.dismiss(); //结束掉进度条对话框
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     /**
      * 下载apk文件
      *
