@@ -5,20 +5,9 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.luffy.generalutilslib.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-
-            <!-- 元数据 -->
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
-        <provider
-            android:name=".utils.fileprovider.DownLoadFileProvider"
             android:authorities="com.aoji.liuxue.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -26,7 +15,7 @@
             <!-- 元数据 -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_student" />
+                android:resource="@xml/file_paths" />
         </provider>
 
     </application>

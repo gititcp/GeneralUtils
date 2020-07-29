@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 
 import com.luffy.generalutilslib.BuildConfig;
-import com.luffy.generalutilslib.utils.fileprovider.DownLoadFileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -80,37 +79,6 @@ public class VersionUpgradeUtils {
         }.start();
     }
 
-
-    /**
-     * 外部升级（下载apk）
-     *
-     * @param mContext 是否有效
-     * @param uri      下载地址
-     */
-    public void internalUpgrade(final Context mContext, final String uri, final String fileprovider) {
-        final ProgressDialog mProgressDialog;    //进度条对话框
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setMessage("正在下载更新");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
-        //启动子线程下载任务
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    File file = downloadApk(uri, mProgressDialog);
-                    sleep(2000);
-                    installApk(mContext, file, fileprovider);
-                    mProgressDialog.dismiss(); //结束掉进度条对话框
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
     /**
      * 下载apk文件
      *
@@ -160,26 +128,7 @@ public class VersionUpgradeUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri apkUri = FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".fileprovider", file); //与manifest中定义的provider中的authorities保持一致
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        }
-        mContext.startActivity(intent);
-    }
-
-    /**
-     * 安装Apk
-     *
-     * @param mContext 上下文
-     * @param file     文件
-     */
-    public void installApk(Context mContext, File file, String fileprovider) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri apkUri = DownLoadFileProvider.getUriForFile(mContext, fileprovider, file); //与manifest中定义的provider中的authorities保持一致
+            Uri apkUri = FileProvider.getUriForFile(mContext, "com.aoji.liuxue.fileprovider", file); //与manifest中定义的provider中的authorities保持一致
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
         } else {
