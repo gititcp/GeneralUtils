@@ -94,7 +94,7 @@ public class VersionUpgradeUtils {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
             //获取到文件的大小
-            mProgressDialog.setMax(conn.getContentLength());
+            float allLength = conn.getContentLength()*1.0f/1024/1024;
             InputStream is = conn.getInputStream();
             long time = System.currentTimeMillis();//当前时间的毫秒数
             File file = new File(Environment.getExternalStorageDirectory(), time + "updata.apk");
@@ -107,7 +107,10 @@ public class VersionUpgradeUtils {
                 fos.write(buffer, 0, len);
                 total += len;
                 //获取当前下载量
-                mProgressDialog.setProgress(total);
+                float cur = total*1.0f/1024/1024;
+                mProgressDialog.setProgressNumberFormat(String.format("%.2fm/%.2fm", cur, allLength));
+                mProgressDialog.setProgress((int) cur);
+                mProgressDialog.setMax((int) allLength);
             }
             fos.close();
             bis.close();
