@@ -108,7 +108,7 @@ public class VersionUpgradeUtils {
                 total += len;
                 //获取当前下载量
                 float cur = total*1.0f/1024/1024;
-                mProgressDialog.setProgressNumberFormat(String.format("%.2fm/%.2fm", cur, allLength));
+                mProgressDialog.setProgressNumberFormat(String.format("%.2fM/%.2fM", cur, allLength));
                 mProgressDialog.setProgress((int) cur);
                 mProgressDialog.setMax((int) allLength);
             }
